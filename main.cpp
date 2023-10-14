@@ -13,6 +13,9 @@
 #include <string>
 #include <string_view>
 
+
+
+
 inline std::ostream& operator<<(std::ostream& output, Position pos) {
     return output << "(" << pos.row << ", " << pos.col << ")";
 }
