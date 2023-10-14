@@ -32,3 +32,5 @@
 *.app
 cmake-build-debug/
 .idea/
+antlr4_runtime/
+src/antlr-4.13.1-complete.jar
