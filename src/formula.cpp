@@ -39,4 +39,4 @@ struct CellValueGetter {
     double operator()(const FormulaError &error) {
         throw error;
     }
-};
+}

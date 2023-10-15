@@ -1,58 +1,32 @@
-cmake_minimum_required(VERSION 3.23 )
-
-project("project-4" VERSION 0.0.1 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.23)
+project("project-4")
 
 set(CMAKE_CXX_STANDARD 20)
 
-if(MSVC)
-    set(
-            CMAKE_CXX_FLAGS_DEBUG
-            "${CMAKE_CXX_FLAGS_DEBUG} /JMC"
-    )
-else()
-    set(
-            CMAKE_CXX_FLAGS
-            "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-implicit-fallthrough"
-    )
-endif()
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/FindANTLR.cmake)
 
-add_definitions(
-        -DANTLR4CPP_STATIC
-        -D_SILENCE_ALL_CXX20_DEPRECATION_WARNINGS
-)
+if (MSVC)
+    message(STATUS "USE VISUAL STUDIO COMPILER")
+    # All flags: https://docs.microsoft.com/ru-ru/cpp/build/reference/compiler-options-listed-by-category?view=msvc-160
+    add_compile_options(/WX)
+else ()
+    message(STATUS "USE MINGW COMPILER")
+    set(SYSTEM_LIBS -lstdc++)
+    #    add_compile_options(-Wall -Wextra -ltbb -lpthread) #   +fs --enable-libstdcxx-filesystem-ts
+endif ()
 
-set(WITH_STATIC_CRT OFF CACHE BOOL "Visual C++ static CRT for ANTLR" FORCE)
+#add_subdirectory(tests)
 
-add_subdirectory(antlr4_runtime)
-include_directories(antlr4_formula)
 
-include_directories(
-        ${ANTLR4_INCLUDE_DIRS}
-        ${ANTLR_FormulaParser_OUTPUT_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/antlr4_runtime/runtime/src
-)
+set(SOURCE_DIR src)
 
-aux_source_directory(src/ SRC_LIST)
-aux_source_directory(antlr4_formula/ FORMULA_SRC_LIST)
 
-add_executable(
-        ${PROJECT_NAME}
-        ${ANTLR_FormulaParser_CXX_OUTPUTS}
-        ${SRC_LIST}
-        ${FORMULA_SRC_LIST}
-)
+set(sheet_DIR ${SOURCE_DIR})
+set(sheet_FILES
+        ${sheet_DIR}/header/common.h
+        ${sheet_DIR}/structures.cpp
+        ${sheet_DIR}/header/test_runner_p.h
+        )
 
-target_link_libraries(${PROJECT_NAME} antlr4_static)
-if(MSVC)
-    target_compile_options(antlr4_static PRIVATE /W0)
-endif()
-
-install(
-        TARGETS ${PROJECT_NAME}
-        DESTINATION bin
-        EXPORT ${PROJECT_NAME}
-)
-
-set_directory_properties(PROPERTIES VS_STARTUP_PROJECT ${PROJECT_NAME})
+# SET UP BUILD TARGETS
+add_executable("project-4" main.cpp ${sheet_FILES})
