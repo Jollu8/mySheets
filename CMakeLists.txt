@@ -1,32 +1,58 @@
 cmake_minimum_required(VERSION 3.23 )
-project(project4)
 
-set(CMAKE_CXX_STANDARD 17)
+project("project-4" VERSION 0.0.1 LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 20)
+
+if(MSVC)
+    set(
+            CMAKE_CXX_FLAGS_DEBUG
+            "${CMAKE_CXX_FLAGS_DEBUG} /JMC"
+    )
+else()
     set(
             CMAKE_CXX_FLAGS
             "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Wno-unused-parameter -Wno-implicit-fallthrough"
     )
+endif()
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/FindANTLR.cmake)
 
-
-
-
-add_subdirectory(antlr4_runtime)
-
-#add_subdirectory(tests)
-add_subdirectory(src)
-#target_link_libraries(project-4 antlr4_static src)
-
-add_executable(spreadsheet main.cpp antlr4_runtime src)
-
-
-install(
-        TARGETS spreadsheet
-        DESTINATION bin
-        EXPORT spreadsheet
+add_definitions(
+        -DANTLR4CPP_STATIC
+        -D_SILENCE_ALL_CXX20_DEPRECATION_WARNINGS
 )
 
+set(WITH_STATIC_CRT OFF CACHE BOOL "Visual C++ static CRT for ANTLR" FORCE)
 
-#`set_directory_properties(PROPERTIES VS_STARTUP_PROJECT spreadsheet)
-#`
+add_subdirectory(antlr4_runtime)
+include_directories(antlr4_formula)
+
+include_directories(
+        ${ANTLR4_INCLUDE_DIRS}
+        ${ANTLR_FormulaParser_OUTPUT_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/antlr4_runtime/runtime/src
+)
+
+aux_source_directory(src/ SRC_LIST)
+aux_source_directory(antlr4_formula/ FORMULA_SRC_LIST)
+
+add_executable(
+        ${PROJECT_NAME}
+        ${ANTLR_FormulaParser_CXX_OUTPUTS}
+        ${SRC_LIST}
+        ${FORMULA_SRC_LIST}
+)
+
+target_link_libraries(${PROJECT_NAME} antlr4_static)
+if(MSVC)
+    target_compile_options(antlr4_static PRIVATE /W0)
+endif()
+
+install(
+        TARGETS ${PROJECT_NAME}
+        DESTINATION bin
+        EXPORT ${PROJECT_NAME}
+)
+
+set_directory_properties(PROPERTIES VS_STARTUP_PROJECT ${PROJECT_NAME})

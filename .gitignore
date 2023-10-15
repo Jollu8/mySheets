@@ -31,6 +31,7 @@
 *.out
 *.app
 cmake-build-debug/
+cmake-build-release/
 .idea/
 antlr4_runtime/
-src/antlr-4.13.1-complete.jar
+antlr-4.13.1-complete.jar
