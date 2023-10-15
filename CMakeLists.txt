@@ -3,8 +3,6 @@ project("project-4")
 
 set(CMAKE_CXX_STANDARD 20)
 
-
-
 if (MSVC)
     message(STATUS "USE VISUAL STUDIO COMPILER")
     # All flags: https://docs.microsoft.com/ru-ru/cpp/build/reference/compiler-options-listed-by-category?view=msvc-160
