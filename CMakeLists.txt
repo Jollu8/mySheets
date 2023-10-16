@@ -1,30 +1,54 @@
-cmake_minimum_required(VERSION 3.23)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.23 )
+
 project("project-4")
 
-set(CMAKE_CXX_STANDARD 20)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+set(CMAKE_CXX_STANDARD 17)
 
-if (MSVC)
-    message(STATUS "USE VISUAL STUDIO COMPILER")
-    # All flags: https://docs.microsoft.com/ru-ru/cpp/build/reference/compiler-options-listed-by-category?view=msvc-160
-    add_compile_options(/WX)
-else ()
-    message(STATUS "USE MINGW COMPILER")
-    set(SYSTEM_LIBS -lstdc++)
-    #    add_compile_options(-Wall -Wextra -ltbb -lpthread) #   +fs --enable-libstdcxx-filesystem-ts
-endif ()
+# Use clang++ compiler
+set(CMAKE_CXX_COMPILER "clang++")
 
-#add_subdirectory(tests)
+# required if linking to static library
+add_definitions(-DANTLR4CPP_STATIC)
+
+# using /MD flag for antlr4_runtime (for Visual C++ compilers only)
+set(ANTLR4_WITH_STATIC_CRT OFF)
+
+# add external build for antlrcpp
+include(ExternalAntlr4Cpp)
+
+# add antrl4cpp artifacts to project environment
+include_directories(${ANTLR4_INCLUDE_DIRS})
+
+# set variable pointing to the antlr tool that supports C++
+# this is not required if the jar file can be found under PATH environment
+set(ANTLR_EXECUTABLE ${CMAKE_SOURCE_DIR}/tools/antlr-4.13.1-complete.jar)
 
 
-set(SOURCE_DIR src)
+
+# add macros to generate ANTLR Cpp code from grammar
+find_package(ANTLR REQUIRED)
+
+# Call macro to add lexer and grammar to your build dependencies.
+antlr_target(FormulaParser Formula.g4 LEXER PARSER LISTENER)
 
 
-set(sheet_DIR ${SOURCE_DIR})
-set(sheet_FILES
-        ${sheet_DIR}/header/common.h
-        ${sheet_DIR}/structures.cpp
-        ${sheet_DIR}/header/test_runner_p.h
+# include generated files in project environment
+include_directories(${ANTLR_FormulaParser_OUTPUT_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/header)
+
+
+#include_directories(${PROJECT_SOURCE_DIR}/antlr4_formula)
+
+
+file(GLOB SOURCES "src/*.cpp" ${PROJECT_SOURCE_DIR}/"antlr4_formula/*.cpp" ${PROJECT_SOURCE_DIR}/"antlr4_formula/*.h")
+
+# add generated grammar to synthtax binary target
+add_executable("project-4" main.cpp
+        ${ANTLR_FormulaParser_CXX_OUTPUTS}
+        ${SOURCES}
         )
 
-# SET UP BUILD TARGETS
-add_executable("project-4" main.cpp ${sheet_FILES})
+
+
+target_link_libraries("project-4" PRIVATE antlr4_static  )

@@ -1,34 +1,10 @@
-#include "header/cell.h"
+#include "cell.h"
 
 #include <optional>
 #include <string>
 
 /* CELL VALUE INTERFACE */
 
-class Cell::CellValueInterface {
-public:  // Types
-    using Value = CellInterface::Value;
-
-    enum class Type { Empty, Text, Formula };
-
-public:  // Constructor
-    explicit CellValueInterface(Type type) : type_(type) {}
-
-public:  // Destructor
-    virtual ~CellValueInterface() = default;
-
-public:  // Methods
-    [[nodiscard]] virtual Value GetValue() const = 0;
-    [[nodiscard]] virtual Value GetRawValue() const = 0;
-    [[nodiscard]] virtual std::string GetText() const = 0;
-
-    [[nodiscard]] Type GetType() const {
-        return type_;
-    }
-
-private:  // Fields
-    Type type_;
-};
 
 /* EMPTY CELL VALUE */
 

@@ -1,10 +1,11 @@
 #pragma once
-
-#include <optional>
-#include <unordered_set>
-
 #include "common.h"
 #include "formula.h"
+#include <optional>
+#include <unordered_set>
+#include <memory>
+
+
 
 class Cell : public CellInterface {
 public:  // Types
@@ -56,4 +57,28 @@ private:
 
     mutable CellsStorage descending_cells_;
     mutable CellsStorage ascending_cells_;
+};
+class Cell::CellValueInterface {
+public:  // Types
+    using Value = CellInterface::Value;
+
+    enum class Type { Empty, Text, Formula };
+
+public:  // Constructor
+    explicit CellValueInterface(Type type) : type_(type) {}
+
+public:  // Destructor
+    virtual ~CellValueInterface() = default;
+
+public:  // Methods
+    [[nodiscard]] virtual Value GetValue() const = 0;
+    [[nodiscard]] virtual Value GetRawValue() const = 0;
+    [[nodiscard]] virtual std::string GetText() const = 0;
+
+    [[nodiscard]] Type GetType() const {
+        return type_;
+    }
+
+private:  // Fields
+    Type type_;
 };

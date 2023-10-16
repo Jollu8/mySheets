@@ -1,32 +1,29 @@
-// my headers;
-#include "header/formula.h"
-
-// headers;
+#include "formula.h"
 
 #include <algorithm>
 #include <regex>
 #include <sstream>
 
-//my headers;
+#include "FormulaAST.h"
+#include "cell.h"
 
-#include "header/FormulaAST.h"
-#include "header/cell.h"
+using namespace std::literals;
 
-
-std::ostream &operator<<(std::ostream &output, FormulaError error) {
+std::ostream& operator<<(std::ostream& output, FormulaError error) {
     return output << error.ToString();
-
 }
 
 struct CellValueGetter {
-    double operator()(const std::string &text) {
+    double operator()(const std::string& text) {
         try {
             static const std::regex kDoubleValuePattern("^(-?)(0|([1-9][0-9]*))(.[0-9]+)?$");
+
             std::smatch match;
-            if (std::regex_match(text.cbegin(), text.cend(), match, kDoubleValuePattern)) return std::stod(text);
+            if (std::regex_match(text.cbegin(), text.cend(), match, kDoubleValuePattern))
+                return std::stod(text);
 
+            // In case string could not be converted to double
             throw std::runtime_error("");
-
         } catch (...) {
             throw FormulaError(FormulaError::Category::Value);
         }
@@ -36,57 +33,60 @@ struct CellValueGetter {
         return value;
     }
 
-    double operator()(const FormulaError &error) {
+    double operator()(const FormulaError& error) {
         throw error;
     }
 };
 
 namespace {
     class Formula : public FormulaInterface {
-    public: // Constructor
-        explicit Formula(const std::string &expression) : ast_(ParseFormulaAST(expression)),
-                                                          referenced_cells_(ast_.GetCells().begin(),
-                                                                            ast_.GetCells().end()) {
+    public:  // Constructor
+        explicit Formula(const std::string& expression)
+                : ast_(ParseFormulaAST(expression)), referenced_cells_(ast_.GetCells().begin(), ast_.GetCells().end()) {
             auto last = std::unique(referenced_cells_.begin(), referenced_cells_.end());
+
             referenced_cells_.erase(last, referenced_cells_.end());
             std::sort(referenced_cells_.begin(), referenced_cells_.end());
         }
 
-    public: // Methods
-        Value Evaluate(const SheetInterface &sheet) const override {
+    public:  // Methods
+        [[nodiscard]] Value Evaluate(const SheetInterface& sheet) const override {
             try {
-                auto get_value = [&sheet](const Position &position) {
-                    if (auto *cell = sheet.GetCell(position)) return std::visit(CellValueGetter{}, cell->GetValue());
+                auto get_value = [&sheet](const Position& position) {
+                    if (auto* cell = sheet.GetCell(position))
+                        return std::visit(CellValueGetter{}, cell->GetValue());
+                    // In case the cell is beyond the boundaries or absent - treat as Empty cell
                     return 0.;
                 };
-                return ast_.Execute(get_value);
 
-            } catch (const FormulaError &error_code) {
+                return ast_.Execute(get_value);
+            } catch (const FormulaError& error_code) {
                 return error_code;
             }
         }
 
-        std::string GetExpression() const override {
+        [[nodiscard]] std::string GetExpression() const override {
             std::stringstream ss;
             ast_.PrintFormula(ss);
+
             return ss.str();
         }
 
-        std::vector<Position> GetReferencedCells() const override {
+        [[nodiscard]] std::vector<Position> GetReferencedCells() const override {
             return referenced_cells_;
         }
 
-    private: // Fields
+    private:  // Fields
         FormulaAST ast_;
         std::vector<Position> referenced_cells_;
     };
-}
 
-std::unique_ptr<FormulaInterface> ParseFormula(const std::string &expression) {
+}  // namespace
+
+std::unique_ptr<FormulaInterface> ParseFormula(const std::string& expression) {
     try {
         return std::make_unique<Formula>(expression);
-
-    } catch (std::exception &e) {
+    } catch (std::exception& e) {
         throw FormulaException(e.what());
     }
 }

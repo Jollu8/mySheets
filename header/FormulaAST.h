@@ -4,7 +4,7 @@
 #include <functional>
 #include <stdexcept>
 
-#include "FormulaAST.h"
+#include "FormulaLexer.h"
 #include "common.h"
 
 namespace ASTImpl {

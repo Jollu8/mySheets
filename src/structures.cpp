@@ -3,7 +3,7 @@
 #include <sstream>
 #include <unordered_map>
 
-#include "header/common.h"
+#include "common.h"
 
 const int kLettersCount = 26;
 const int kMaxPositionLength = 17;
