@@ -25,9 +25,10 @@
 
 Перед началом сборки необходимо:
 - [antlr-4.13.1-complete.jar](https://www.antlr.org/download.html) добавить в папку `tools/`.
-- установите в систему.
 - Загрузите и установите среду выполнения Java SE.
 - Загрузите и установите пакет разработки Java SE.
+- Удалите файлы кроме Formula.4g из `${PROJECT_SOURCE_DIR}antlr4_formula/`
+- выполните команду `antlr4 -Dlanguage=Cpp TLexer.g4` (вы должны находится в /antlr4_formula/<Formula.4g>)
 - примечание (mac os требует antlr4-cpp-runtime)
 
 Теперь Cmake сможет собрать проект.
