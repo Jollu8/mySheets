@@ -3,6 +3,7 @@
 #include "test_runner_p.h"
 
 #include <limits>
+#include <variant>
 
 inline std::ostream &operator<<(std::ostream &output, Position pos) {
     return output << "(" << pos.row << ", " << pos.col << ")";

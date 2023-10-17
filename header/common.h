@@ -5,9 +5,11 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
-#include <string_view>
+
 #include <variant>
 #include <vector>
+#include <string_view>
+
 
 inline constexpr char kFormulaSign = '=';
 inline constexpr char kEscapeSign = '\'';

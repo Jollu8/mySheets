@@ -11,7 +11,7 @@ configure_file(versiondef.h.in
         ${CMAKE_CURRENT_BINARY_DIR}/versiondef.h)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # Use clang++ compiler
 set(CMAKE_CXX_COMPILER "clang++")
