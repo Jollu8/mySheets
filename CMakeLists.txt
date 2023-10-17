@@ -1,6 +1,14 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.23 )
+CMAKE_MINIMUM_REQUIRED(VERSION 3.23)
+set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
+set(PROJECT_VERSION 0.0.${PATCH_VERSION})
 
-project("project-4")
+project("project-4" VERSION ${PROJECT_VERSION})
+
+option(WITH_GOOGLE_TEST "Whether to build Google tets" ON)
+
+
+configure_file(versiondef.h.in
+        ${CMAKE_CURRENT_BINARY_DIR}/versiondef.h)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_CXX_STANDARD 17)
@@ -10,6 +18,7 @@ set(CMAKE_CXX_COMPILER "clang++")
 
 # required if linking to static library
 add_definitions(-DANTLR4CPP_STATIC)
+
 
 # using /MD flag for antlr4_runtime (for Visual C++ compilers only)
 set(ANTLR4_WITH_STATIC_CRT OFF)
@@ -23,7 +32,6 @@ include_directories(${ANTLR4_INCLUDE_DIRS})
 # set variable pointing to the antlr tool that supports C++
 # this is not required if the jar file can be found under PATH environment
 set(ANTLR_EXECUTABLE ${CMAKE_SOURCE_DIR}/tools/antlr-4.13.1-complete.jar)
-
 
 
 # add macros to generate ANTLR Cpp code from grammar
@@ -49,6 +57,7 @@ add_executable("project-4" main.cpp
         ${SOURCES}
         )
 
+target_link_libraries("project-4" PRIVATE antlr4_static)
 
 
-target_link_libraries("project-4" PRIVATE antlr4_static  )
+

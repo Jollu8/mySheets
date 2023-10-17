@@ -36,3 +36,5 @@ cmake-build-release/
 antlr4_runtime/
 tools/antlr-4.13.1-complete.jar
 dist/
+html/
+latex/

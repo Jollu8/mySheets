@@ -1,0 +1,54 @@
+PROJECT_NAME           = "spreadsheet"
+PROJECT_NUMBER         = "1.0"
+OUTPUT_DIRECTORY       = ./
+CREATE_SUBDIRS         = NO
+OPTIMIZE_OUTPUT_FOR_C  = YES
+OPTIMIZE_OUTPUT_JAVA   = NO
+OPTIMIZE_FOR_FORTRAN   = NO
+OPTIMIZE_OUTPUT_VHDL   = NO
+EXTENSION_MAPPING      =
+MARKDOWN_SUPPORT       = YES
+AUTOLINK_SUPPORT       = YES
+BUILTIN_STL_SUPPORT    = NO
+CPP_CLI_SUPPORT        = NO
+SIP_SUPPORT            = NO
+IDL_PROPERTY_SUPPORT   = YES
+DISTRIBUTE_GROUP_DOC   = NO
+SUBGROUPING            = YES
+INLINE_INHERITED_MEMB  = NO
+SORT_MEMBER_DOCS       = YES
+SORT_BRIEF_DOCS        = NO
+SORT_MEMBERS_CTORS_1ST = NO
+SORT_GROUP_NAMES       = NO
+
+#--------------------------
+# Input
+#--------------------------
+INPUT                  = root/CMakeLists.txt \
+                         root/main.cpp \
+                         root/version.cpp \
+                         root/versiodef.h.in \
+                         root/version.h \
+                         root/Formula.g4 \
+                         root/README \
+                         root/src \
+                         root/header \
+                         root/cmake \
+                         root/antlr4_formula
+FILE_PATTERNS          = *.cpp *.h *.hpp *.c *.hh *.hpp \
+                         *.cc *.cxx *.c++ *.java *.ii *.ixx \
+                         *.ipp *.i++ *.inl *.idl *.ddl *.odl *.h \
+                         *.cs *.d *.php *.php4 *.php5 *.phtml *.inc \
+                         *.m *.markdown *.md *.mm *.dox *.py *.pyw \
+                         *.f90 *.f *.for *.tcl *.vhd *.vhdl *.ucf \
+                         *.qsf *.as *.js \
+                         CMakeLists.txt README *.g4
+
+RECURSIVE              = YES
+EXCLUDE                =
+EXCLUDE_SYMLINKS       = NO
+EXCLUDE_PATTERNS       =
+EXCLUDE_SYMBOLS        =
+SOURCE_BROWSER         = NO
+INLINE_SOURCES         = NO
+STRIP_CODE_COM
