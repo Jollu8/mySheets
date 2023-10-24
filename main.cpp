@@ -26,6 +26,7 @@ inline std::ostream &operator<<(std::ostream &output, const CellInterface::Value
     return output;
 }
 
+
 #if 0
 namespace {
     void TestPositionAndStringConversion() {
