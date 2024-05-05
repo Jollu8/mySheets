@@ -350,49 +350,30 @@ namespace {
     }
 }  // namespace
 #endif
-//int main() {
-//#if 0
-//    TestRunner tr;
-//    RUN_TEST(tr, TestPositionAndStringConversion);
-//    RUN_TEST(tr, TestPositionToStringInvalid);
-//    RUN_TEST(tr, TestStringToPositionInvalid);
-//    RUN_TEST(tr, TestEmpty);
-//    RUN_TEST(tr, TestInvalidPosition);
-//    RUN_TEST(tr, TestSetCellPlainText);
-//    RUN_TEST(tr, TestClearCell);
-//    RUN_TEST(tr, TestFormulaArithmetic);
-//    RUN_TEST(tr, TestFormulaReferences);
-//    RUN_TEST(tr, TestFormulaExpressionFormatting);
-//    RUN_TEST(tr, TestFormulaReferencedCells);
-//    RUN_TEST(tr, TestErrorValue);
-//    RUN_TEST(tr, TestErrorDiv0);
-//    RUN_TEST(tr, TestEmptyCellTreatedAsZero);
-//    RUN_TEST(tr, TestFormulaInvalidPosition);
-//    RUN_TEST(tr, TestPrint);
-//    RUN_TEST(tr, TestCellReferences);
-//    RUN_TEST(tr, TestFormulaIncorrect);
-//    RUN_TEST(tr, TestCellCircularReferences);
-//
-//#endif
-//
-//    std::cout << "TEST Done!" <<std::endl;
-//}
+int main() {
+#if 0
+    TestRunner tr;
+    RUN_TEST(tr, TestPositionAndStringConversion);
+    RUN_TEST(tr, TestPositionToStringInvalid);
+    RUN_TEST(tr, TestStringToPositionInvalid);
+    RUN_TEST(tr, TestEmpty);
+    RUN_TEST(tr, TestInvalidPosition);
+    RUN_TEST(tr, TestSetCellPlainText);
+    RUN_TEST(tr, TestClearCell);
+    RUN_TEST(tr, TestFormulaArithmetic);
+    RUN_TEST(tr, TestFormulaReferences);
+    RUN_TEST(tr, TestFormulaExpressionFormatting);
+    RUN_TEST(tr, TestFormulaReferencedCells);
+    RUN_TEST(tr, TestErrorValue);
+    RUN_TEST(tr, TestErrorDiv0);
+    RUN_TEST(tr, TestEmptyCellTreatedAsZero);
+    RUN_TEST(tr, TestFormulaInvalidPosition);
+    RUN_TEST(tr, TestPrint);
+    RUN_TEST(tr, TestCellReferences);
+    RUN_TEST(tr, TestFormulaIncorrect);
+    RUN_TEST(tr, TestCellCircularReferences);
 
+#endif
 
-#include "spreadsheet.h"
-
-#include <QApplication>
-
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    QPalette pal = QApplication::palette();
-    pal.setColor(QPalette::Window, Qt::white);
-    QApplication::setPalette(pal);
-    SpreadSheet w;
-
-    w.resize(600, 600);
-    w.show();
-    return QApplication::exec();
+    std::cout << "TEST Done!" <<std::endl;
 }
-
